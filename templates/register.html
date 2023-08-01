@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Register</title>
+</head>
+<body>
+<form method="post" >
+    {% csrf_token %}
+    <input type="text" name="first_name" placeholder="first_name">
+    <input type="text" name="middle_name" placeholder="middle_name">
+    <input type="text" name="last_name" placeholder="last_name">
+    <input type="text" name="address" placeholder="address">
+    <input type="text" name="city" placeholder="city">
+    <input type="text" name="state" placeholder="state">
+    <input type="number" name="zipcode" placeholder="zipcode">
+    <input type="number" name="contact_number_office" placeholder="contact_number_office">
+    <input type="number" name="contact_number_mobile" placeholder="contact_number_mobile">
+    <input type="email" name="email" placeholder="email">
+    <input type="number" name="user_type_id" placeholder="user_type_id">
+    <input type="text" name="gender" placeholder="gender">
+    <input type="password" name="password" placeholder="password">
+  <button>Submit</button>
+</form>
+</body>
+</html>

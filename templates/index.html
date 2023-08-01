@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>home</title>
+</head>
+<body>
+
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    <input type="file" name="files" id="fileInput" multiple accept=".csv, .xlsx, .pdf, .txt">
+    <button>Submit</button>
+</form>
+
+<h2>Selected Files:</h2>
+  <ul id="fileList"></ul>
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+// Function to handle file selection and update the list of selected files
+function updateFileList() {
+  const fileListElement = $("#fileList");
+  const fileInput = document.getElementById("fileInput");
+  fileListElement.empty();
+
+  for (let i = 0; i < fileInput.files.length; i++) {
+    fileListElement.append(`<li>
+      <div>${fileInput.files[i].name}</div>
+
+    </li><br>`);
+  }
+}
+
+// Function to send files to the backend using AJAX
+function uploadFiles() {
+  const fileInput = document.getElementById("fileInput");
+  const formData = new FormData();
+  const myArray = [];
+  for (let i = 0; i < fileInput.files.length; i++) {
+    formData.append("files[]", fileInput.files[i]);
+    myArray.push($('.edit_file_name:eq('+i+') input').val());
+  }
+  console.log(myArray)
+  formData.append("namelist", myArray)
+
+  // Replace 'backend/upload' with the URL to your backend endpoint
+  $.ajax({
+    url: "backend/upload",
+    type: "POST",
+    data: formData,
+    processData: false,
+    contentType: false,
+    success: function(data) {
+      // Handle the response from the backend, if needed
+      console.log("Response from backend:", data);
+    },
+    error: function(error) {
+      console.error("Error uploading files:", error);
+    }
+  });
+}
+
+// Attach an event listener to the file input to update the file list when files are selected
+$(document).on("change", "#fileInput", updateFileList);
+
+// Attach an event listener to the "Upload Files" button to trigger the file upload
+$(document).on("click", "#uploadButton", uploadFiles);
+</script>
+
+
+
+<!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>-->
+
+<!--<script>-->
+<!--    // Function to handle file selection and update the list of selected files-->
+<!--function updateFileList() {-->
+<!--  const fileListElement = $("#fileList");-->
+<!--  const fileInput = document.getElementById("fileInput");-->
+<!--&lt;!&ndash;  fileListElement.innerHTML = "";&ndash;&gt;-->
+<!--  for (let i = 0; i < fileInput.files.length; i++) {-->
+<!--    fileListElement.append(`<li><div>${fileInput.files[i].name}</div><div class="remove_file">X</div><div class="edit_file_name">edit file name<input type="text" value="${fileInput.files[i].name}"></div></li><br>`)-->
+<!--  }-->
+<!--}-->
+
+<!--// Function to send files to the backend-->
+<!--function uploadFiles() {-->
+<!--  const fileInput = document.getElementById("fileInput");-->
+<!--  const formData = new FormData();-->
+
+<!--  for (let i = 0; i < fileInput.files.length; i++) {-->
+<!--    formData.append("files[]", fileInput.files[i]);-->
+<!--    formData.append("file_names[]", $('.edit_file_name:eq('+i+') input').val());-->
+<!--  }-->
+
+
+<!--  // Replace 'backend/upload' with the URL to your backend endpoint-->
+<!--  fetch("backend/upload", {-->
+<!--    method: "POST",-->
+<!--    body: formData,-->
+<!--  })-->
+<!--  .then((response) => response.json())-->
+<!--  .then((data) => {-->
+<!--    // Handle the response from the backend, if needed-->
+<!--    console.log("Response from backend:", data);-->
+<!--  })-->
+<!--  .catch((error) => {-->
+<!--    console.error("Error uploading files:", error);-->
+<!--  });-->
+<!--}-->
+
+<!--// Attach an event listener to the file input to update the file list when files are selected-->
+<!--document.getElementById("fileInput").addEventListener("change", updateFileList);-->
+
+<!--</script>-->
+</body>
+</html>
